@@ -67,3 +67,29 @@ def atualizar_produto(data_update: UpdateProduto,
             status_code=400,
             detail=str(erro)
         )
+
+@router.delete("/delete_product")
+def deletar_produto(empresa_id: str, produto_id: str,
+                    username: str = Depends(tokenAcess.token.verify_token)):
+    try:
+        resultado = service.deletar_produto(empresa_id, produto_id)
+
+        if not resultado:
+            raise HTTPException(
+                status_code=404,
+                detail="Produto não encontrado ou não pertence a esta empresa."
+            )
+
+        return {
+            "sucesso": True,
+            "mensagem": "Produto deletado com sucesso."
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as erro:
+        raise HTTPException(
+            status_code=500,
+            detail=str(erro)
+        )

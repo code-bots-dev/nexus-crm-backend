@@ -42,7 +42,7 @@ def buscar_clientes(empresa_id: str,
     }
 
 @router.post("/register_client")
-def cadastrar_produto(cliente: CadastroCliente,
+def cadastrar_cliente(cliente: CadastroCliente,
                     username: str = Depends(tokenAcess.token.verify_token)):
     try:
         p_cliente_id = service.cadastrar_cliente(cliente)
@@ -65,14 +65,6 @@ def atualizar_cliente(cliente: AtualizarCliente,
                     username: str = Depends(tokenAcess.token.verify_token)):
 
     try:
-        status_cliente = cRepository.consultar_status_cliente(cliente.contatos_id)
-        if status_cliente[0]['status'] != 'ATIVO':
-            return {
-                "sucesso": False,
-                "mensagem": "Cliente não está Ativo",
-                "id": cliente.contatos_id
-            }
-
         p_cliente_id = service.ser_atualizar_cliente(cliente)
 
         return {

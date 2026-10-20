@@ -17,6 +17,12 @@ class ClienteRepository(BaseRepository):
                    ct.email,
                    ct.cpf_cnpj,
                    ct.status,
+                   ct.cep,
+                   ct.nome_rua,
+                   ct.numero,
+                   ct.complemento,
+                   ct.bairro,
+                   ct.uf,
                    ct.created_at
             from public.contatos ct
             where 1=1
@@ -44,14 +50,20 @@ class ClienteRepository(BaseRepository):
     def inserir_cliente(self,
                          cliente: CadastroCliente):
         query_insert = """
-                INSERT INTO public.contatos (empresa_id,nome,telefone,email,status)
-                VALUES(%s, %s, %s, %s, %s)
+                INSERT INTO public.contatos (empresa_id, nome, telefone, email, status, cep, nome_rua, numero, complemento, bairro, uf)
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
         return self.execute_query(query_insert, (cliente.empresa_id,
                                                  cliente.nome,
                                                  cliente.telefone,
                                                  cliente.email,
-                                                 cliente.status)
+                                                 cliente.status,
+                                                 cliente.cep,
+                                                 cliente.nome_rua,
+                                                 cliente.numero,
+                                                 cliente.complemento,
+                                                 cliente.bairro,
+                                                 cliente.uf)
                                   )
 
     def inserir_endereco_contato(self,
@@ -62,6 +74,12 @@ class ClienteRepository(BaseRepository):
     def atualizar_cliente(self, pAtualizaCliente: AtualizarCliente):
         query = """
             select public.atualiza_contato(
+                %s::uuid,
+                %s::uuid,
+                %s,
+                %s,
+                %s,
+                %s,
                 %s,
                 %s,
                 %s,
@@ -84,15 +102,20 @@ class ClienteRepository(BaseRepository):
             pAtualizaCliente.empresa_nome,
             pAtualizaCliente.observacao_contato,
             pAtualizaCliente.status,
+            pAtualizaCliente.cep,
+            pAtualizaCliente.nome_rua,
+            pAtualizaCliente.numero,
+            pAtualizaCliente.complemento,
+            pAtualizaCliente.bairro,
+            pAtualizaCliente.uf,
         ))
-        # return query
 
     def consultar_status_cliente(self, cliente_id):
         query = """
             select status 
             from public.contatos
             where 1=1
-            and id = %s
+            and id = %s::uuid
         """
         return self.execute_query(query, (cliente_id,))
 

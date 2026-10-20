@@ -21,3 +21,6 @@ class ProdutoService:
             raise ValueError("O estoque não pode ser negativo.")
 
         return self.repository.inserir_produto_por_id_empresa(produto)
+
+    def deletar_produto(self, empresa_id: str, produto_id: str):
+        return self.repository.deletar_produto(empresa_id, produto_id)

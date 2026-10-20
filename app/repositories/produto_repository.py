@@ -54,6 +54,14 @@ class ProdutoRepository(BaseRepository):
                                           )
                                   )
 
+    def deletar_produto(self, empresa_id: str, produto_id: str):
+        query = """
+            DELETE FROM public.produtos
+            WHERE id = %s AND empresa_id = %s
+            RETURNING id
+        """
+        return self.execute_query(query, (produto_id, empresa_id))
+
 if __name__=='__main__':
     repository = ProdutoRepository()
 

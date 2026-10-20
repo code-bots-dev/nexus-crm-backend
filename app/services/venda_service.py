@@ -9,18 +9,29 @@ class VendaService:
         dvendas = self.repository.retorna_vendas(empresa_id)
         # print(dvendas)
         if not dvendas:
-            return ValueError(f"Nenhuma venda encontrada para empresa {empresa_id}")
+            raise ValueError(f"Nenhuma venda encontrada para empresa {empresa_id}")
 
         return dvendas
 
     def cadastrar_vendas(self, pVendas: InsertVendas):
         if not pVendas.empresa_id:
-            return ValueError("Necessário informar o variável ID Empresa.")
+            raise ValueError("Necessário informar o variável ID Empresa.")
 
         return self.repository.criar_venda(pVendas)
 
     def atualizar_vendas(self):
         pass
+
+    def listar_formas_pagamento(self, empresa_id: str = None):
+        return self.repository.retorna_formas_pagamento(empresa_id)
+
+    def deletar_venda(self, empresa_id: str, vendas_id: str):
+        if not empresa_id:
+            raise ValueError("ID da empresa (empresa_id) é obrigatório.")
+        if not vendas_id:
+            raise ValueError("ID da venda (vendas_id) é obrigatório.")
+
+        return self.repository.deletar_venda(empresa_id, vendas_id)
 
 if __name__=='__main__':
     repository = VendaService()

@@ -6,6 +6,12 @@ class CadastroCliente(BaseModel):
     telefone: str
     email: str
     status: str
+    cep: str | None = None
+    nome_rua: str | None = None
+    numero: str | None = None
+    complemento: str | None = None
+    bairro: str | None = None
+    uf: str | None = None
 
 class CadastrarEnderecoCliente(BaseModel):
     contatos_id: str
@@ -28,6 +34,12 @@ class AtualizarCliente(BaseModel):
     empresa_nome: str | None = None
     observacao_contato: str | None = None
     status: str | None = None
+    cep: str | None = None
+    nome_rua: str | None = None
+    numero: str | None = None
+    complemento: str | None = None
+    bairro: str | None = None
+    uf: str | None = None
 
 class DeletarCliente(BaseModel):
     empresa_id: str | None = None

@@ -29,12 +29,16 @@ class ClienteService:
     def ser_atualizar_cliente(self,
                               pAtualizaCliente: AtualizarCliente
                               ):
+        if not pAtualizaCliente.contatos_id:
+            raise ValueError("O campo contatos_id é obrigatório.")
 
         status_cliente = self.repository.consultar_status_cliente(pAtualizaCliente.contatos_id)
 
-        # return status_cliente
-        if status_cliente[0]['status'] != 'ATIVO':
-            return ValueError("Cliente não pode ser atualizado foi está INATIVO.")
+        if not status_cliente:
+            raise ValueError("Contato não encontrado na base de dados.")
+
+        if status_cliente[0].get('status') != 'ATIVO':
+            raise ValueError("Cliente não pode ser atualizado pois está INATIVO.")
 
         return self.repository.atualizar_cliente(pAtualizaCliente)
 

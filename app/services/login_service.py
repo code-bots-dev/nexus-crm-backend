@@ -1,17 +1,17 @@
 from app.repositories.login_repository import LoginRepository
+from app.repositories.permissoes_repository import PermissoesRepository
 from app.models.login_model import UserNexus
 
 class LoginService:
     def __init__(self):
         self.repository = LoginRepository()
+        self.permissoesRepository = PermissoesRepository()
 
     def validar_usuario(self, dadosUsuario: UserNexus):
         if dadosUsuario.username is None or dadosUsuario.password is None:
             ValueError("Dados do usuário é obrigatório.")
         dados_usuario = self.repository.dados_usuario(dadosUsuario)
         valido_user = self.repository.validar_usuario(dadosUsuario)
-
-
 
         if not valido_user and not dados_usuario:
             return False
